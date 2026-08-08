@@ -1,0 +1,42 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.silentiumlabs.silentiumos'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId 'com.silentiumlabs.silentiumos'
+        minSdk 28
+        targetSdk 28
+        versionCode 18
+        versionName '0.7.5-public-source'
+
+        def configuredPin = project.findProperty('SILENTIUM_PARENT_PIN') ?: System.getenv('SILENTIUM_PARENT_PIN') ?: '0000'
+        if (!(configuredPin ==~ /\d{4}/)) {
+            throw new GradleException('SILENTIUM_PARENT_PIN must be exactly four digits.')
+        }
+        buildConfigField 'String', 'PARENT_PIN', '"' + configuredPin + '"'
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}

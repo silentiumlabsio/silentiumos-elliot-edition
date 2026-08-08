@@ -1,0 +1,67 @@
+# Android / Gradle
+.gradle/
+**/build/
+local.properties
+*.iml
+.idea/
+.vscode/
+
+# Signing and credentials
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pem
+*.key
+.env
+.env.*
+!.env.example
+
+# Runtime and private device data
+runtime/
+state/
+logs/
+*.log
+captures/
+reports/private/
+GAME_LIBRARY_BACKUP*/
+LEGAL_LIBRARY_SOURCE_CACHE/
+LARGE_LIBRARY_WORK/
+GAME_TEST_FAILURES/
+GAME_TEST_RESULTS_*.jsonl
+ELLIOT_LIBRARY_TEST_REPORT.txt
+SILENTIUMOS_HEALTH_REPORT.txt
+
+# ROMs, BIOS, cores, packages, and archives are never committed
+*.nes
+*.sfc
+*.smc
+*.gb
+*.gbc
+*.gba
+*.bin
+*.gen
+*.md
+*.sms
+*.rom
+*.cue
+*.chd
+*.iso
+*.apk
+*.aab
+*.so
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+*.tgz
+roms/
+bios/
+cores/
+games/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini

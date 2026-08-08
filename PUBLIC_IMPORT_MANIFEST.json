@@ -1,0 +1,210 @@
+{
+  "project": "SilentiumOS \u2014 Elliot Edition",
+  "version": "0.7.5-public-source",
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 710
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "bytes": 712
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 832
+    },
+    {
+      "path": "README.md",
+      "bytes": 4299
+    },
+    {
+      "path": "SECURITY.md",
+      "bytes": 775
+    },
+    {
+      "path": "app/build.gradle",
+      "bytes": 1102
+    },
+    {
+      "path": "app/proguard-rules.pro",
+      "bytes": 24
+    },
+    {
+      "path": "app/src/main/AndroidManifest.xml",
+      "bytes": 3833
+    },
+    {
+      "path": "app/src/main/java/com/silentiumlabs/silentiumos/BootReceiver.java",
+      "bytes": 977
+    },
+    {
+      "path": "app/src/main/java/com/silentiumlabs/silentiumos/ConsoleGuardService.java",
+      "bytes": 7321
+    },
+    {
+      "path": "app/src/main/java/com/silentiumlabs/silentiumos/GameLibraryActivity.java",
+      "bytes": 7432
+    },
+    {
+      "path": "app/src/main/java/com/silentiumlabs/silentiumos/GameListActivity.java",
+      "bytes": 19737
+    },
+    {
+      "path": "app/src/main/java/com/silentiumlabs/silentiumos/HomeRedirectAccessibilityService.java",
+      "bytes": 3149
+    },
+    {
+      "path": "app/src/main/java/com/silentiumlabs/silentiumos/LibraryTestModeReceiver.java",
+      "bytes": 1356
+    },
+    {
+      "path": "app/src/main/java/com/silentiumlabs/silentiumos/MainActivity.java",
+      "bytes": 9243
+    },
+    {
+      "path": "app/src/main/java/com/silentiumlabs/silentiumos/ParentPinActivity.java",
+      "bytes": 6292
+    },
+    {
+      "path": "app/src/main/java/com/silentiumlabs/silentiumos/ParentToolsActivity.java",
+      "bytes": 5698
+    },
+    {
+      "path": "app/src/main/java/com/silentiumlabs/silentiumos/RetroToolsActivity.java",
+      "bytes": 8023
+    },
+    {
+      "path": "app/src/main/java/com/silentiumlabs/silentiumos/SplashActivity.java",
+      "bytes": 3524
+    },
+    {
+      "path": "app/src/main/java/com/silentiumlabs/silentiumos/SystemDefinition.java",
+      "bytes": 5180
+    },
+    {
+      "path": "app/src/main/res/drawable/dashboard_background.xml",
+      "bytes": 296
+    },
+    {
+      "path": "app/src/main/res/drawable/silentium_banner.png",
+      "bytes": 25061
+    },
+    {
+      "path": "app/src/main/res/drawable/silentium_icon.png",
+      "bytes": 229981
+    },
+    {
+      "path": "app/src/main/res/drawable/silentium_logo.png",
+      "bytes": 387976
+    },
+    {
+      "path": "app/src/main/res/drawable/tile_default.xml",
+      "bytes": 372
+    },
+    {
+      "path": "app/src/main/res/drawable/tile_focused.xml",
+      "bytes": 425
+    },
+    {
+      "path": "app/src/main/res/drawable/tile_pressed.xml",
+      "bytes": 276
+    },
+    {
+      "path": "app/src/main/res/drawable/tile_selector.xml",
+      "bytes": 344
+    },
+    {
+      "path": "app/src/main/res/values/strings.xml",
+      "bytes": 193
+    },
+    {
+      "path": "app/src/main/res/values/styles.xml",
+      "bytes": 571
+    },
+    {
+      "path": "app/src/main/res/xml/home_redirect_accessibility.xml",
+      "bytes": 465
+    },
+    {
+      "path": "build.gradle",
+      "bytes": 77
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "bytes": 1288
+    },
+    {
+      "path": "docs/FIRE_OS_LIMITATIONS.md",
+      "bytes": 645
+    },
+    {
+      "path": "docs/LEGAL_LIBRARY.md",
+      "bytes": 890
+    },
+    {
+      "path": "docs/SCREENSHOTS.md",
+      "bytes": 463
+    },
+    {
+      "path": "docs/assets/silentium_banner.png",
+      "bytes": 25061
+    },
+    {
+      "path": "docs/assets/silentium_icon.png",
+      "bytes": 229981
+    },
+    {
+      "path": "docs/assets/silentium_logo.png",
+      "bytes": 387976
+    },
+    {
+      "path": "docs/screenshots/.gitkeep",
+      "bytes": 0
+    },
+    {
+      "path": "gradle.properties",
+      "bytes": 110
+    },
+    {
+      "path": "scripts/build-debug.ps1",
+      "bytes": 324
+    },
+    {
+      "path": "scripts/set-target.example.ps1",
+      "bytes": 211
+    },
+    {
+      "path": "settings.gradle",
+      "bytes": 330
+    },
+    {
+      "path": "tools/disable_console_mode.py",
+      "bytes": 3464
+    },
+    {
+      "path": "tools/enable_console_mode.py",
+      "bytes": 8927
+    },
+    {
+      "path": "tools/library_builder.py",
+      "bytes": 71020
+    },
+    {
+      "path": "tools/patch_retroarch_return.py",
+      "bytes": 2069
+    },
+    {
+      "path": "tools/prepare_accessibility_resource.py",
+      "bytes": 1685
+    },
+    {
+      "path": "tools/prepare_retroarch_cores.py",
+      "bytes": 7192
+    },
+    {
+      "path": "tools/verify_library.py",
+      "bytes": 3833
+    }
+  ]
+}

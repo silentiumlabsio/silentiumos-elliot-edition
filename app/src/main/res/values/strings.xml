@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_redirect_accessibility_description">Returns Amazon Home to the SilentiumOS dashboard for Elliot.</string>
+</resources>
