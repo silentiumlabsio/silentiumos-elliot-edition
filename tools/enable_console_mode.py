@@ -8,10 +8,9 @@ import subprocess
 import time
 from pathlib import Path
 
-TARGET = os.environ.get("SILENTIUM_TARGET", "fire-tv-hostname.local:5555")
+TARGET = os.environ.get("SILENTIUM_TARGET", "").strip()
 PACKAGE = "com.silentiumlabs.silentiumos"
 HOME_COMPONENT = f"{PACKAGE}/.SplashActivity"
-MAIN_COMPONENT = f"{PACKAGE}/.MainActivity"
 GUARD_COMPONENT = f"{PACKAGE}/.ConsoleGuardService"
 ACCESSIBILITY_COMPONENT = (
     "com.silentiumlabs.silentiumos/"
@@ -65,6 +64,10 @@ def adb_output(adb: Path, *arguments: str) -> str:
     return (result.stdout or "").strip()
 
 def connect(adb: Path) -> None:
+    if not TARGET:
+        raise RuntimeError(
+            "Set SILENTIUM_TARGET to an authorized ADB host before running."
+        )
     run([str(adb), "connect", TARGET])
     if adb_output(adb, "get-state") != "device":
         raise RuntimeError(
@@ -260,7 +263,7 @@ def start_services_and_dashboard(adb: Path) -> None:
             "start",
             "-W",
             "-n",
-            MAIN_COMPONENT,
+            HOME_COMPONENT,
         ],
         capture=True,
     )
@@ -309,7 +312,7 @@ def verify_home_redirect(adb: Path) -> bool:
                 "am",
                 "start",
                 "-n",
-                MAIN_COMPONENT,
+                HOME_COMPONENT,
             ]
         )
         time.sleep(2)

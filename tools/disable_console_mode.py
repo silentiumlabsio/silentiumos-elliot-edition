@@ -6,7 +6,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
-TARGET = os.environ.get("SILENTIUM_TARGET", "fire-tv-hostname.local:5555")
+TARGET = os.environ.get("SILENTIUM_TARGET", "").strip()
 PACKAGE = "com.silentiumlabs.silentiumos"
 ACCESSIBILITY_COMPONENT = (
     "com.silentiumlabs.silentiumos/"
@@ -50,6 +50,10 @@ def adb_output(adb: Path, *arguments: str) -> str:
 
 def main() -> int:
     try:
+        if not TARGET:
+            raise RuntimeError(
+                "Set SILENTIUM_TARGET to an authorized ADB host before running."
+            )
         adb = find_adb()
         run([str(adb), "connect", TARGET])
 

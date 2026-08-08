@@ -13,9 +13,14 @@ local.properties
 *.pfx
 *.pem
 *.key
+*.crt
+*.cer
+*.der
 .env
 .env.*
 !.env.example
+.secrets/
+scripts/set-target.ps1
 
 # Runtime and private device data
 runtime/
@@ -31,6 +36,10 @@ GAME_TEST_FAILURES/
 GAME_TEST_RESULTS_*.jsonl
 ELLIOT_LIBRARY_TEST_REPORT.txt
 SILENTIUMOS_HEALTH_REPORT.txt
+tools/CONSOLE_MODE_STATE.txt
+tools/RETROARCH_CORES/
+tools/ELLIOT_GAMES/
+tools/cores.ready
 
 # ROMs, BIOS, cores, packages, and archives are never committed
 *.nes
@@ -41,7 +50,6 @@ SILENTIUMOS_HEALTH_REPORT.txt
 *.gba
 *.bin
 *.gen
-*.md
 *.sms
 *.rom
 *.cue
@@ -49,6 +57,8 @@ SILENTIUMOS_HEALTH_REPORT.txt
 *.iso
 *.apk
 *.aab
+*.apks
+*.xapk
 *.so
 *.zip
 *.7z

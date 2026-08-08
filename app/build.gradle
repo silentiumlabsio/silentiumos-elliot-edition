@@ -10,14 +10,23 @@ android {
         applicationId 'com.silentiumlabs.silentiumos'
         minSdk 28
         targetSdk 28
-        versionCode 18
-        versionName '0.7.5-public-source'
+        versionCode 19
+        versionName '0.7.6-public-source'
 
-        def configuredPin = project.findProperty('SILENTIUM_PARENT_PIN') ?: System.getenv('SILENTIUM_PARENT_PIN') ?: '0000'
+        def configuredPin = project.findProperty('SILENTIUM_PARENT_PIN') ?: System.getenv('SILENTIUM_PARENT_PIN')
+        if (configuredPin == null) {
+            throw new GradleException(
+                    'Set SILENTIUM_PARENT_PIN as a Gradle property or environment variable before building.')
+        }
         if (!(configuredPin ==~ /\d{4}/)) {
             throw new GradleException('SILENTIUM_PARENT_PIN must be exactly four digits.')
         }
-        buildConfigField 'String', 'PARENT_PIN', '"' + configuredPin + '"'
+        def pinHash = java.security.MessageDigest
+                .getInstance('SHA-256')
+                .digest(configuredPin.getBytes(java.nio.charset.StandardCharsets.UTF_8))
+                .collect { String.format('%02x', it & 0xff) }
+                .join()
+        buildConfigField 'String', 'PARENT_PIN_SHA256', '"' + pinHash + '"'
     }
 
     buildFeatures {

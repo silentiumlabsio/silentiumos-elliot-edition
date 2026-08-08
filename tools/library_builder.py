@@ -18,7 +18,7 @@ import zlib
 from dataclasses import dataclass
 from pathlib import Path
 
-TARGET = os.environ.get("SILENTIUM_TARGET", "fire-tv-hostname.local:5555")
+TARGET = os.environ.get("SILENTIUM_TARGET", "").strip()
 SILENTIUM_PACKAGE = "com.silentiumlabs.silentiumos"
 SILENTIUM_SPLASH = (
     "com.silentiumlabs.silentiumos/.SplashActivity"
@@ -123,7 +123,7 @@ COLLECTIONS = (
     ),
 )
 
-USER_AGENT = "SilentiumOS-Elliot-Edition/0.7.5"
+USER_AGENT = "SilentiumOS-Elliot-Edition/0.7.6"
 
 # Elliot's library is intentionally conservative. These terms are checked
 # against the ROM filename and the collection's accompanying text metadata.
@@ -227,8 +227,9 @@ FATAL_LOG_PATTERNS = (
 MAX_TOTAL_GAMES = 340
 MIN_FREE_SPACE_AFTER_INSTALL = 650 * 1024 * 1024
 MAX_LIBRARY_BYTES = 700 * 1024 * 1024
-TEST_ENGINE_VERSION = "0.7.5-safe-test-path-v1"
-RESULT_CACHE = ROOT / "GAME_TEST_RESULTS_0.7.5.jsonl"
+MAX_EXTRACTED_ARCHIVE_BYTES = 1024 * 1024 * 1024
+TEST_ENGINE_VERSION = "0.7.6-safe-test-path-v1"
+RESULT_CACHE = ROOT / "GAME_TEST_RESULTS_0.7.6.jsonl"
 RETROARCH_RUNTIME: dict[str, str] = {}
 
 
@@ -331,6 +332,10 @@ def adb_output(
 
 
 def connect(adb: Path) -> None:
+    if not TARGET:
+        raise RuntimeError(
+            "Set SILENTIUM_TARGET to an authorized ADB host before running."
+        )
     run_text([str(adb), "connect", TARGET], timeout=30)
 
     if adb_output(adb, "get-state", timeout=20) != "device":
@@ -390,6 +395,47 @@ def hash_file(path: Path) -> str:
                 break
             digest.update(block)
     return digest.hexdigest()
+
+
+def safely_extract_zip(
+        archive: zipfile.ZipFile,
+        destination: Path) -> None:
+    root = destination.resolve()
+    members = archive.infolist()
+    total_size = sum(member.file_size for member in members)
+
+    if total_size > MAX_EXTRACTED_ARCHIVE_BYTES:
+        raise RuntimeError(
+            "Archive expands beyond the public safety limit."
+        )
+
+    for member in members:
+        relative = Path(member.filename.replace("\\", "/"))
+        unix_type = (member.external_attr >> 16) & 0o170000
+
+        if (
+            relative.is_absolute()
+            or ".." in relative.parts
+            or unix_type == 0o120000
+        ):
+            raise RuntimeError(
+                f"Unsafe archive member rejected: {member.filename}"
+            )
+
+        target = (destination / relative).resolve()
+        if target != root and root not in target.parents:
+            raise RuntimeError(
+                f"Archive member escapes work directory: {member.filename}"
+            )
+
+        if member.is_dir():
+            target.mkdir(parents=True, exist_ok=True)
+            continue
+
+        target.parent.mkdir(parents=True, exist_ok=True)
+        with archive.open(member) as source:
+            with target.open("wb") as output:
+                shutil.copyfileobj(source, output)
 
 
 def text_is_allowed(filename: str, metadata: str) -> tuple[bool, str]:
@@ -607,7 +653,7 @@ def collect_from_archive(
     extraction.mkdir(parents=True, exist_ok=True)
 
     with zipfile.ZipFile(archive) as bundle:
-        bundle.extractall(extraction)
+        safely_extract_zip(bundle, extraction)
 
     extensions = SYSTEMS[system]["extensions"]
 
@@ -2221,7 +2267,7 @@ def test_candidates(
         f"{estimated_minutes + 12} minutes"
     )
     print(
-        "Completed 0.7.5 results are cached, so an "
+        "Completed 0.7.6 results are cached, so an "
         "interrupted rerun resumes instead of starting over."
     )
 
@@ -2483,7 +2529,7 @@ def write_outputs(
 
     manifest_data = {
         "format": 2,
-        "edition": "SilentiumOS Elliot Edition 0.7.5",
+        "edition": "SilentiumOS Elliot Edition 0.7.6",
         "test_method": (
             "ROM structure check, SHA-256, real Fire TV launch, "
             "two process-stability checks, foreground activity, "
@@ -2507,7 +2553,7 @@ def write_outputs(
     )
 
     credit_lines = [
-        "SILENTIUMOS ELLIOT EDITION 0.7.5",
+        "SILENTIUMOS ELLIOT EDITION 0.7.6",
         "LARGE TESTED LEGAL LIBRARY",
         "",
         (
@@ -2565,7 +2611,7 @@ def write_outputs(
     )
 
     report_lines = [
-        "SILENTIUMOS ELLIOT EDITION 0.7.5",
+        "SILENTIUMOS ELLIOT EDITION 0.7.6",
         "LARGE LIBRARY HARDWARE TEST REPORT",
         "=" * 55,
         "",

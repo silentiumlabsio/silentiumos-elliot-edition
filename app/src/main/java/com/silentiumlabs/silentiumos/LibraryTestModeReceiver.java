@@ -23,7 +23,9 @@ public class LibraryTestModeReceiver extends BroadcastReceiver {
                     DEFAULT_TEST_WINDOW_MS);
             ConsoleGuardService.allowExternalApps(
                     context,
-                    Math.max(60000L, duration));
+                    Math.min(
+                            DEFAULT_TEST_WINDOW_MS,
+                            Math.max(60000L, duration)));
             return;
         }
 

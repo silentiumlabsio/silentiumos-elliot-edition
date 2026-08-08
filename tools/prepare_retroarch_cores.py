@@ -8,9 +8,9 @@ import urllib.request
 import zipfile
 from pathlib import Path
 
-TARGET = os.environ.get("SILENTIUM_TARGET", "fire-tv-hostname.local:5555")
+TARGET = os.environ.get("SILENTIUM_TARGET", "").strip()
 PACKAGE = "com.retroarch.ra32"
-USER_AGENT = "SilentiumOS-Elliot-Edition/0.6.4"
+USER_AGENT = "SilentiumOS-Elliot-Edition/0.7.6"
 
 ROOT = Path(__file__).resolve().parent
 CORE_DIR = ROOT / "RETROARCH_CORES"
@@ -60,6 +60,10 @@ def adb_output(adb: Path, *arguments: str) -> str:
     return (result.stdout or "").strip()
 
 def connect(adb: Path) -> None:
+    if not TARGET:
+        raise RuntimeError(
+            "Set SILENTIUM_TARGET to an authorized ADB host before running."
+        )
     run([str(adb), "connect", TARGET])
     if adb_output(adb, "get-state") != "device":
         raise RuntimeError("Fire TV is not connected or authorized.")

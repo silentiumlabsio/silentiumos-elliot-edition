@@ -14,6 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class ParentPinActivity extends Activity {
     private final StringBuilder entered = new StringBuilder();
     private TextView dots;
@@ -138,7 +142,7 @@ public class ParentPinActivity extends Activity {
         updateDots();
 
         if (entered.length() == 4) {
-            if (BuildConfig.PARENT_PIN.contentEquals(entered)) {
+            if (isPinCorrect(entered)) {
                 ConsoleGuardService.allowExternalApps(this, 300000L);
                 startActivity(new Intent(this, ParentToolsActivity.class));
                 finish();
@@ -155,6 +159,24 @@ public class ParentPinActivity extends Activity {
     private void clearPin() {
         entered.setLength(0);
         updateDots();
+    }
+
+    private boolean isPinCorrect(CharSequence candidate) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] value = digest.digest(
+                    candidate.toString().getBytes(StandardCharsets.UTF_8));
+            StringBuilder hex = new StringBuilder(value.length * 2);
+            for (byte item : value) {
+                hex.append(String.format("%02x", item & 0xff));
+            }
+            return MessageDigest.isEqual(
+                    BuildConfig.PARENT_PIN_SHA256.getBytes(
+                            StandardCharsets.US_ASCII),
+                    hex.toString().getBytes(StandardCharsets.US_ASCII));
+        } catch (NoSuchAlgorithmException ignored) {
+            return false;
+        }
     }
 
     private void updateDots() {

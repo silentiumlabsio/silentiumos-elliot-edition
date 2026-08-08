@@ -1,0 +1,29 @@
+name: Feature request
+description: Suggest a public-safe improvement to the launcher, tooling, or documentation.
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: checkboxes
+    id: policy
+    attributes:
+      label: Project-policy confirmation
+      options:
+        - label: This request does not require distributing ROMs, BIOS files, APKs, emulator cores, credentials, or private device data.
+          required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What user or maintenance problem should this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered

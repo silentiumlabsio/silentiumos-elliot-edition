@@ -7,7 +7,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
-TARGET = os.environ.get("SILENTIUM_TARGET", "fire-tv-hostname.local:5555")
+TARGET = os.environ.get("SILENTIUM_TARGET", "").strip()
 ROOT = Path(__file__).resolve().parent
 MANIFEST = ROOT / "ELLIOT_GAMES" / "validated_library.json"
 REPORT = ROOT / "SILENTIUMOS_HEALTH_REPORT.txt"
@@ -70,6 +70,10 @@ def main() -> int:
     ]
 
     try:
+        if not TARGET:
+            raise RuntimeError(
+                "Set SILENTIUM_TARGET to an authorized ADB host before running."
+            )
         if not MANIFEST.exists():
             raise RuntimeError(
                 "Local validated-library manifest is missing."

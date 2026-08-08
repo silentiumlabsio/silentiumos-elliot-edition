@@ -1,5 +1,9 @@
-# Copy this file to set-target.ps1 and edit the address.
-$env:SILENTIUM_TARGET = "fire-tv-hostname.local:5555"
+# Copy this file to set-target.ps1. The local copy is ignored by Git.
+$env:SILENTIUM_TARGET = Read-Host "Authorized ADB hostname and port"
+
+if (-not $env:SILENTIUM_TARGET) {
+    throw "SILENTIUM_TARGET is required."
+}
 
 $adb = "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe"
 & $adb connect $env:SILENTIUM_TARGET
