@@ -11,7 +11,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -76,7 +75,7 @@ public class MainActivity extends Activity {
         ImageView logo = new ImageView(this);
         logo.setImageResource(R.drawable.silentium_icon);
         logo.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        header.addView(logo, new LinearLayout.LayoutParams(dp(132), dp(132)));
+        header.addView(logo, new LinearLayout.LayoutParams(dp(118), dp(118)));
 
         LinearLayout titleGroup = new LinearLayout(this);
         titleGroup.setOrientation(LinearLayout.VERTICAL);
@@ -107,7 +106,10 @@ public class MainActivity extends Activity {
         header.addView(titleGroup, new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         root.addView(header, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, dp(145)));
+                LinearLayout.LayoutParams.MATCH_PARENT, dp(128)));
+
+        root.addView(buildPrivacyStrip(), new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, dp(36)));
 
         TextView section = new TextView(this);
         section.setText("ELLIOT'S GAME CENTER");
@@ -121,16 +123,16 @@ public class MainActivity extends Activity {
 
         LinearLayout firstRow = makeRow();
 
-        Button play = makeTile("PLAY GAMES\nBrowse every system");
+        ConsoleTileButton play = makeTile("Play Games", "Browse every system");
         play.setOnClickListener(v ->
                 startActivity(new Intent(this, GameLibraryActivity.class)));
         firstRow.addView(play, tileParams());
 
-        Button best = makeTile("BEST ONES\nElliot's top picks");
+        ConsoleTileButton best = makeTile("Best Ones", "Elliot's top picks");
         best.setOnClickListener(v -> openGameList(SystemDefinition.BEST));
         firstRow.addView(best, tileParams());
 
-        Button all = makeTile("ALL GAMES\nComplete legal library");
+        ConsoleTileButton all = makeTile("All Games", "Complete legal library");
         all.setOnClickListener(v -> openGameList(SystemDefinition.ALL));
         firstRow.addView(all, tileParams());
 
@@ -138,21 +140,23 @@ public class MainActivity extends Activity {
 
         LinearLayout secondRow = makeRow();
 
-        Button controllers = makeTile("CONTROLLERS\nBluetooth pairing");
+        ConsoleTileButton controllers = makeTile(
+                "Controllers", "Bluetooth pairing");
         controllers.setOnClickListener(v -> {
             ConsoleGuardService.allowExternalApps(this, 120000L);
             openSettings(Settings.ACTION_BLUETOOTH_SETTINGS);
         });
         secondRow.addView(controllers, tileParams());
 
-        Button network = makeTile("NETWORK\nWi-Fi settings");
+        ConsoleTileButton network = makeTile("Network", "Wi-Fi settings");
         network.setOnClickListener(v -> {
             ConsoleGuardService.allowExternalApps(this, 120000L);
             openSettings(Settings.ACTION_WIFI_SETTINGS);
         });
         secondRow.addView(network, tileParams());
 
-        Button parent = makeTile("PARENT TOOLS\nPIN protected setup");
+        ConsoleTileButton parent = makeTile(
+                "Parent Tools", "PIN-protected setup");
         parent.setOnClickListener(v ->
                 startActivity(new Intent(this, ParentPinActivity.class)));
         secondRow.addView(parent, tileParams());
@@ -188,23 +192,34 @@ public class MainActivity extends Activity {
         return row;
     }
 
-    private Button makeTile(String text) {
-        Button button = new Button(this);
-        button.setText(text);
-        button.setTextColor(Color.WHITE);
-        button.setTextSize(18);
-        button.setAllCaps(false);
-        button.setGravity(Gravity.CENTER);
-        button.setFocusable(true);
-        button.setFocusableInTouchMode(true);
-        button.setBackgroundResource(R.drawable.tile_selector);
-        button.setPadding(dp(16), dp(10), dp(16), dp(10));
-        button.setOnFocusChangeListener((v, hasFocus) -> v.animate()
-                .scaleX(hasFocus ? 1.045f : 1f)
-                .scaleY(hasFocus ? 1.045f : 1f)
-                .setDuration(120)
-                .start());
-        return button;
+    private ConsoleTileButton makeTile(String title, String subtitle) {
+        return new ConsoleTileButton(this, title, subtitle);
+    }
+
+    private View buildPrivacyStrip() {
+        LinearLayout strip = new LinearLayout(this);
+        strip.setOrientation(LinearLayout.HORIZONTAL);
+        strip.setGravity(Gravity.CENTER);
+        strip.setBackgroundResource(R.drawable.dashboard_status);
+
+        strip.addView(makeStatusLabel("LOCAL LIBRARY"), statusParams());
+        strip.addView(makeStatusLabel("NO ANALYTICS"), statusParams());
+        strip.addView(makeStatusLabel("PARENT LOCK"), statusParams());
+        return strip;
+    }
+
+    private TextView makeStatusLabel(String value) {
+        TextView label = new TextView(this);
+        label.setText(value);
+        label.setTextColor(Color.rgb(205, 205, 205));
+        label.setTextSize(11);
+        label.setLetterSpacing(0.12f);
+        label.setGravity(Gravity.CENTER);
+        return label;
+    }
+
+    private LinearLayout.LayoutParams statusParams() {
+        return new LinearLayout.LayoutParams(0, dp(36), 1f);
     }
 
     private LinearLayout.LayoutParams tileParams() {

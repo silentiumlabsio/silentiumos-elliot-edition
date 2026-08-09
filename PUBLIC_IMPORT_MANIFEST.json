@@ -59,6 +59,10 @@
                       "bytes":  7376
                   },
                   {
+                      "path":  "app/src/main/java/com/silentiumlabs/silentiumos/ConsoleTileButton.java",
+                      "bytes":  3171
+                  },
+                  {
                       "path":  "app/src/main/java/com/silentiumlabs/silentiumos/GameLibraryActivity.java",
                       "bytes":  7432
                   },
@@ -76,7 +80,7 @@
                   },
                   {
                       "path":  "app/src/main/java/com/silentiumlabs/silentiumos/MainActivity.java",
-                      "bytes":  9243
+                      "bytes":  9826
                   },
                   {
                       "path":  "app/src/main/java/com/silentiumlabs/silentiumos/ParentPinActivity.java",
@@ -101,6 +105,10 @@
                   {
                       "path":  "app/src/main/res/drawable/dashboard_background.xml",
                       "bytes":  296
+                  },
+                  {
+                      "path":  "app/src/main/res/drawable/dashboard_status.xml",
+                      "bytes":  300
                   },
                   {
                       "path":  "app/src/main/res/drawable/silentium_banner.png",
