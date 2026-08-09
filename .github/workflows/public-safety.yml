@@ -37,3 +37,13 @@ jobs:
 
       - name: Test public audit rules
         run: python -m unittest discover -s tests -v
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Test game catalog contracts
+        shell: pwsh
+        run: ./scripts/test-java.ps1

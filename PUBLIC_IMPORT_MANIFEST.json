@@ -32,7 +32,7 @@
                   },
                   {
                       "path":  ".github/workflows/public-safety.yml",
-                      "bytes":  926
+                      "bytes":  1164
                   },
                   {
                       "path":  ".gitignore",
@@ -63,12 +63,20 @@
                       "bytes":  3171
                   },
                   {
+                      "path":  "app/src/main/java/com/silentiumlabs/silentiumos/GameCatalog.java",
+                      "bytes":  12386
+                  },
+                  {
+                      "path":  "app/src/main/java/com/silentiumlabs/silentiumos/GameEntry.java",
+                      "bytes":  1918
+                  },
+                  {
                       "path":  "app/src/main/java/com/silentiumlabs/silentiumos/GameLibraryActivity.java",
                       "bytes":  7432
                   },
                   {
                       "path":  "app/src/main/java/com/silentiumlabs/silentiumos/GameListActivity.java",
-                      "bytes":  19737
+                      "bytes":  12865
                   },
                   {
                       "path":  "app/src/main/java/com/silentiumlabs/silentiumos/HomeRedirectAccessibilityService.java",
@@ -104,7 +112,7 @@
                   },
                   {
                       "path":  "app/src/main/java/com/silentiumlabs/silentiumos/SystemDefinition.java",
-                      "bytes":  5180
+                      "bytes":  5451
                   },
                   {
                       "path":  "app/src/main/res/drawable/dashboard_background.xml",
@@ -267,6 +275,10 @@
                       "bytes":  318
                   },
                   {
+                      "path":  "scripts/test-java.ps1",
+                      "bytes":  2228
+                  },
+                  {
                       "path":  "scripts/update-public-manifest.ps1",
                       "bytes":  1089
                   },
@@ -277,6 +289,10 @@
                   {
                       "path":  "settings.gradle",
                       "bytes":  330
+                  },
+                  {
+                      "path":  "tests/java/com/silentiumlabs/silentiumos/GameCatalogContractTest.java",
+                      "bytes":  6373
                   },
                   {
                       "path":  "tests/test_audit_public_release.py",

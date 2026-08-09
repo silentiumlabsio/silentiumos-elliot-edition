@@ -18,49 +18,15 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
 public class GameListActivity extends Activity {
     public static final String EXTRA_SYSTEM = "system";
     private static final int STORAGE_PERMISSION_REQUEST = 4102;
-    private static final String CORE_MARKER =
-            "/storage/emulated/0/SilentiumOS/System/cores.ready";
-
-    private static final String[] BEST_PATTERNS = {
-            "nova",
-            "apotris",
-            "minicraft",
-            "tuff",
-            "tobu",
-            "petris",
-            "evoland",
-            "geometrix",
-            "ucity",
-            "snake",
-            "lazerpong",
-            "sushi",
-            "adjustris",
-            "gothicvania",
-            "tank battle",
-            "battle 4tris",
-            "space shooter",
-            "breakout",
-            "2048",
-            "mr. boom",
-            "craft"
-    };
 
     private String systemId;
-    private Set<String> readyCores = new HashSet<>();
+    private GameCatalog catalog;
+    private GameCatalog.CatalogSnapshot catalogSnapshot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,11 +36,9 @@ public class GameListActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         hideSystemUi();
+        catalog = GameCatalog.forDevice();
 
         systemId = getIntent().getStringExtra(EXTRA_SYSTEM);
-        if (systemId == null) {
-            systemId = SystemDefinition.BEST;
-        }
 
         if (needsStoragePermission()) {
             requestPermissions(
@@ -125,7 +89,8 @@ public class GameListActivity extends Activity {
     }
 
     private void refresh() {
-        readyCores = loadReadyCores();
+        catalogSnapshot = catalog.load(systemId);
+        systemId = catalogSnapshot.getSystemId();
         setContentView(buildScreen());
     }
 
@@ -151,7 +116,7 @@ public class GameListActivity extends Activity {
         subtitle.setPadding(0, dp(5), 0, dp(14));
         root.addView(subtitle);
 
-        List<GameEntry> games = scanGames();
+        List<GameEntry> games = catalogSnapshot.getGames();
 
         if (games.isEmpty()) {
             root.addView(buildEmptyState(), new LinearLayout.LayoutParams(
@@ -184,9 +149,13 @@ public class GameListActivity extends Activity {
                 1f));
 
         TextView footer = new TextView(this);
-        footer.setText(games.size() + " VERIFIED GAME"
+        String footerText = games.size() + " VERIFIED GAME"
                 + (games.size() == 1 ? "" : "S")
-                + " READY FOR ELLIOT");
+                + " READY FOR ELLIOT";
+        if (catalogSnapshot.isTruncated()) {
+            footerText += "  |  LIBRARY SCAN LIMIT REACHED";
+        }
+        footer.setText(footerText);
         footer.setTextColor(Color.rgb(125, 125, 125));
         footer.setTextSize(11);
         footer.setGravity(Gravity.CENTER);
@@ -241,7 +210,7 @@ public class GameListActivity extends Activity {
     }
 
     private String getEmptyMessage() {
-        if (readyCores.isEmpty()) {
+        if (!catalogSnapshot.hasReadyCores()) {
             return "The emulator engine has not finished setup.\n"
                     + "Run BUILD_AND_INSTALL_ELLIOT.cmd on the computer.";
         }
@@ -252,7 +221,7 @@ public class GameListActivity extends Activity {
         }
 
         SystemDefinition system = SystemDefinition.get(systemId);
-        if (!isCoreReady(system.getCoreFile())) {
+        if (!catalogSnapshot.isCoreReady(system.getCoreFile())) {
             return "The emulator core for this system is not installed.";
         }
 
@@ -260,180 +229,11 @@ public class GameListActivity extends Activity {
                 + system.getDirectoryPath();
     }
 
-    private List<GameEntry> scanGames() {
-        List<GameEntry> games = new ArrayList<>();
-
-        if (SystemDefinition.BEST.equals(systemId)
-                || SystemDefinition.ALL.equals(systemId)) {
-            for (SystemDefinition system : SystemDefinition.physicalSystems()) {
-                addGamesForSystem(games, system);
-            }
-            addSilentiumArcade(games);
-
-            if (SystemDefinition.BEST.equals(systemId)) {
-                List<GameEntry> best = new ArrayList<>();
-                for (GameEntry game : games) {
-                    if (isBest(game)) {
-                        best.add(game);
-                    }
-                }
-                games = best;
-            }
-        } else {
-            SystemDefinition selected = SystemDefinition.get(systemId);
-            addGamesForSystem(games, selected);
-            if (SystemDefinition.ARCADE.equals(systemId)) {
-                addSilentiumArcade(games);
-            }
-        }
-
-        Collections.sort(games, new Comparator<GameEntry>() {
-            @Override
-            public int compare(GameEntry left, GameEntry right) {
-                if (SystemDefinition.ALL.equals(systemId)) {
-                    int systemCompare = left.system.getDisplayName()
-                            .compareToIgnoreCase(
-                                    right.system.getDisplayName());
-                    if (systemCompare != 0) {
-                        return systemCompare;
-                    }
-                }
-                return left.displayName.compareToIgnoreCase(
-                        right.displayName);
-            }
-        });
-
-        return games;
-    }
-
-    private void addSilentiumArcade(List<GameEntry> games) {
-        SystemDefinition arcade =
-                SystemDefinition.get(SystemDefinition.ARCADE);
-
-        addContentlessIfReady(
-                games,
-                arcade,
-                "2048 — SILENTIUM ARCADE",
-                "2048_libretro_android.so");
-
-        addContentlessIfReady(
-                games,
-                arcade,
-                "MR. BOOM — SILENTIUM ARCADE",
-                "mrboom_libretro_android.so");
-
-        addContentlessIfReady(
-                games,
-                arcade,
-                "CRAFT BLOCK WORLD — SILENTIUM ARCADE",
-                "craft_libretro_android.so");
-    }
-
-    private void addContentlessIfReady(
-            List<GameEntry> games,
-            SystemDefinition system,
-            String name,
-            String coreFile) {
-        if (isCoreReady(coreFile)) {
-            games.add(GameEntry.noContent(system, name, coreFile));
-        }
-    }
-
-    private boolean isBest(GameEntry game) {
-        String name = game.displayName.toLowerCase(Locale.US);
-        for (String pattern : BEST_PATTERNS) {
-            if (name.contains(pattern)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void addGamesForSystem(
-            List<GameEntry> games,
-            SystemDefinition system) {
-        if (SystemDefinition.ARCADE.equals(system.getId())) {
-            return;
-        }
-
-        if (!isCoreReady(system.getCoreFile())) {
-            return;
-        }
-
-        File folder = new File(system.getDirectoryPath());
-        if (!folder.exists()) {
-            folder.mkdirs();
-            return;
-        }
-
-        addGamesFromFolder(games, system, folder);
-    }
-
-    private void addGamesFromFolder(
-            List<GameEntry> games,
-            SystemDefinition system,
-            File folder) {
-        File[] files = folder.listFiles();
-        if (files == null) {
-            return;
-        }
-
-        for (File file : files) {
-            if (file.isDirectory()) {
-                addGamesFromFolder(games, system, file);
-            } else if (system.accepts(file)) {
-                games.add(new GameEntry(
-                        system,
-                        file,
-                        cleanName(file.getName())));
-            }
-        }
-    }
-
-    private Set<String> loadReadyCores() {
-        Set<String> result = new HashSet<>();
-        File marker = new File(CORE_MARKER);
-        if (!marker.exists()) {
-            return result;
-        }
-
-        try (BufferedReader reader =
-                     new BufferedReader(new FileReader(marker))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String core = line.trim();
-                if (core.length() > 0) {
-                    result.add(core);
-                }
-            }
-        } catch (Exception ignored) {
-            result.clear();
-        }
-        return result;
-    }
-
-    private boolean isCoreReady(String coreFile) {
-        return coreFile != null
-                && coreFile.length() > 0
-                && readyCores.contains(coreFile);
-    }
-
-    private String cleanName(String filename) {
-        int dot = filename.lastIndexOf('.');
-        String result = dot > 0
-                ? filename.substring(0, dot)
-                : filename;
-        return result.replace('_', ' ')
-                .replace('-', ' ')
-                .replaceAll("\\s+", " ")
-                .trim();
-    }
-
     private Button makeGameButton(GameEntry game) {
-        String label = game.displayName;
+        String label = game.getDisplayName();
         if (SystemDefinition.ALL.equals(systemId)
                 || SystemDefinition.BEST.equals(systemId)) {
-            label += "\n" + game.system.getDisplayName();
+            label += "\n" + game.getSystem().getDisplayName();
         }
 
         Button button = makeActionButton(label);
@@ -471,11 +271,9 @@ public class GameListActivity extends Activity {
     }
 
     private void launchGame(GameEntry game) {
-        String coreFile = game.coreFile != null
-                ? game.coreFile
-                : game.system.getCoreFile();
+        String coreFile = game.getResolvedCoreFile();
 
-        if (!isCoreReady(coreFile)) {
+        if (!catalogSnapshot.isCoreReady(coreFile)) {
             Toast.makeText(
                     this,
                     "That emulator core is not ready.",
@@ -483,7 +281,7 @@ public class GameListActivity extends Activity {
             return;
         }
 
-        if (game.file != null && !game.file.exists()) {
+        if (game.getFile() != null && !game.getFile().exists()) {
             Toast.makeText(
                     this,
                     "That game file is missing.",
@@ -503,8 +301,8 @@ public class GameListActivity extends Activity {
                     "com.retroarch.browser.retroactivity."
                             + "RetroActivityFuture");
 
-            if (game.file != null) {
-                intent.putExtra("ROM", game.file.getAbsolutePath());
+            if (game.getFile() != null) {
+                intent.putExtra("ROM", game.getFile().getAbsolutePath());
             }
 
             intent.putExtra(
@@ -571,39 +369,4 @@ public class GameListActivity extends Activity {
                 * getResources().getDisplayMetrics().density);
     }
 
-    private static final class GameEntry {
-        final SystemDefinition system;
-        final File file;
-        final String displayName;
-        final String coreFile;
-
-        GameEntry(
-                SystemDefinition system,
-                File file,
-                String displayName) {
-            this(system, file, displayName, null);
-        }
-
-        GameEntry(
-                SystemDefinition system,
-                File file,
-                String displayName,
-                String coreFile) {
-            this.system = system;
-            this.file = file;
-            this.displayName = displayName;
-            this.coreFile = coreFile;
-        }
-
-        static GameEntry noContent(
-                SystemDefinition system,
-                String displayName,
-                String coreFile) {
-            return new GameEntry(
-                    system,
-                    null,
-                    displayName,
-                    coreFile);
-        }
-    }
 }

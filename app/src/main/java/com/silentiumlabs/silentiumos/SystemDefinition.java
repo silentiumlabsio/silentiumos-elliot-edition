@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public final class SystemDefinition {
     public static final String BEST = "BEST";
@@ -58,10 +59,17 @@ public final class SystemDefinition {
     }
 
     public String getDirectoryPath() {
-        if (folder == null || folder.length() == 0) {
-            return ROOT;
+        return getDirectory(new File(ROOT)).getPath();
+    }
+
+    public File getDirectory(File libraryRoot) {
+        if (libraryRoot == null) {
+            throw new IllegalArgumentException("libraryRoot is required");
         }
-        return ROOT + File.separator + folder;
+        if (folder == null || folder.length() == 0) {
+            return libraryRoot;
+        }
+        return new File(libraryRoot, folder);
     }
 
     public String getCoreFile() {
@@ -73,7 +81,7 @@ public final class SystemDefinition {
             return false;
         }
 
-        String name = file.getName().toLowerCase();
+        String name = file.getName().toLowerCase(Locale.US);
         for (String extension : extensions) {
             if (name.endsWith(extension)) {
                 return true;
