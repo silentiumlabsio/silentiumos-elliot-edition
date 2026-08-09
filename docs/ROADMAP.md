@@ -6,7 +6,7 @@ This roadmap describes likely public-safe improvements. It is not a release prom
 
 - Capture clean, sanitized on-device dashboard proof.
 - Add Gradle Wrapper files so builds do not depend on a separately installed Gradle command.
-- Add Android lint and unit-test configuration.
+- Add Android lint and instrumentation-test configuration beyond the current pure Java contract suite.
 - Verify the privileged ADB control permission on the target Fire OS build.
 - Add a user-visible setup screen for initial PIN provisioning.
 - Replace build-time PIN configuration with Android Keystore-backed local provisioning.

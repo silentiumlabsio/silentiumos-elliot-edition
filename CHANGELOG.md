@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.7.7-public-source
+
+- Extracted game discovery from `GameListActivity` into a pure Java catalog.
+- Added canonical containment checks and symbolic-link rejection.
+- Capped library depth, directory count, game count, and core-marker input.
+- Added dependency-free Java catalog contract tests and CI execution.
+- Added a development guide, architecture decisions, and release checklist.
+
 ## 0.7.6-public-source
 
 - Added original Elliot Edition device, banner, and dashboard concept visuals.

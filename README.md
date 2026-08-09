@@ -51,6 +51,8 @@ The screen is a presentation mockup derived from the implemented dashboard struc
 - Foreground Console Guard service
 - Boot receiver and startup splash
 - System and **All Games** views
+- Bounded, canonical-path-checked local library discovery
+- Dependency-free Java catalog contract tests
 - Direct RetroArch core and ROM launch intents
 - Controller shortcut support for returning from games
 - Legal-library collection, filtering, structural validation, and hardware smoke testing
@@ -79,6 +81,7 @@ SilentiumOS runs **on top of Fire OS**. It is not replacement firmware, does not
 app/                 Android TV launcher source
 scripts/             Build, release-audit, and target examples
 tools/               Legal-library and console-mode utilities
+tests/               Public audit and pure Java contract tests
 docs/assets/         Public branding and product-concept images
 docs/screenshots/    Sanitized interface concepts and future device captures
 docs/                Architecture, security, testing, legal, and roadmap notes
@@ -144,6 +147,9 @@ See [Legal library policy](docs/LEGAL_LIBRARY.md).
 ## Documentation
 
 - [Architecture](docs/ARCHITECTURE.md)
+- [Development guide](docs/DEVELOPMENT.md)
+- [Architecture decisions](docs/decisions/README.md)
+- [Release checklist](RELEASE_CHECKLIST.md)
 - [Device concept and compatibility](docs/DEVICE_CONCEPT.md)
 - [Testing guide](docs/TESTING.md)
 - [Security audit](docs/SECURITY_AUDIT.md)
@@ -155,7 +161,7 @@ See [Legal library policy](docs/LEGAL_LIBRARY.md).
 
 ## Project status
 
-The 0.7.6 public snapshot hardens the 0.7.5 safe-path test architecture and expands its public documentation. The latest documented manual proof confirmed that RetroArch stayed foregrounded and that the requested FCEUmm core was mapped into the running RetroArch process. The new repository visuals are explicitly labeled concepts until clean on-device captures can replace them.
+The 0.7.7 public snapshot adds a bounded, testable game-catalog layer and expands automated source-safety checks. The latest documented manual proof confirmed that RetroArch stayed foregrounded and that the requested FCEUmm core was mapped into the running RetroArch process. Repository visuals remain explicitly labeled concepts until clean on-device captures can replace them.
 
 ## License and trademarks
 

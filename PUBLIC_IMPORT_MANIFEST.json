@@ -1,6 +1,6 @@
 {
     "project":  "SilentiumOS — Elliot Edition",
-    "version":  "0.7.6-public-source",
+    "version":  "0.7.7-public-source",
     "files":  [
                   {
                       "path":  ".editorconfig",
@@ -172,15 +172,15 @@
                   },
                   {
                       "path":  "CHANGELOG.md",
-                      "bytes":  721
+                      "bytes":  1111
                   },
                   {
                       "path":  "CONTRIBUTING.md",
-                      "bytes":  1091
+                      "bytes":  1299
                   },
                   {
                       "path":  "docs/ARCHITECTURE.md",
-                      "bytes":  2602
+                      "bytes":  3262
                   },
                   {
                       "path":  "docs/assets/silentium_banner.png",
@@ -207,6 +207,22 @@
                       "bytes":  1986
                   },
                   {
+                      "path":  "docs/decisions/0001-local-first-application.md",
+                      "bytes":  1031
+                  },
+                  {
+                      "path":  "docs/decisions/0002-bounded-library-discovery.md",
+                      "bytes":  1109
+                  },
+                  {
+                      "path":  "docs/decisions/README.md",
+                      "bytes":  423
+                  },
+                  {
+                      "path":  "docs/DEVELOPMENT.md",
+                      "bytes":  2827
+                  },
+                  {
                       "path":  "docs/DEVICE_CONCEPT.md",
                       "bytes":  2261
                   },
@@ -224,7 +240,7 @@
                   },
                   {
                       "path":  "docs/ROADMAP.md",
-                      "bytes":  1429
+                      "bytes":  1484
                   },
                   {
                       "path":  "docs/SCREENSHOTS.md",
@@ -260,7 +276,11 @@
                   },
                   {
                       "path":  "README.md",
-                      "bytes":  7842
+                      "bytes":  8148
+                  },
+                  {
+                      "path":  "RELEASE_CHECKLIST.md",
+                      "bytes":  1450
                   },
                   {
                       "path":  "scripts/audit-public-release.ps1",

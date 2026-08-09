@@ -23,7 +23,7 @@ $entries = @(
 
 $manifest = [ordered]@{
     project = [string]::Concat("SilentiumOS ", [char]0x2014, " Elliot Edition")
-    version = "0.7.6-public-source"
+    version = "0.7.7-public-source"
     files = $entries
 }
 

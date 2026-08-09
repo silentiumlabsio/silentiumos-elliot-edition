@@ -7,6 +7,7 @@ SilentiumOS is an Android application using programmatic Java television layouts
 - `SplashActivity` — branded leanback and Home entry point
 - `MainActivity` — controller-first television dashboard
 - `GameLibraryActivity` / `GameListActivity` — system and game views
+- `GameCatalog` / `GameEntry` — read-only library discovery and launchable item model
 - `ParentPinActivity` / `ParentToolsActivity` — protected household configuration area
 - `PublicSystemInfoActivity` — public build and privacy facts without device identifiers
 - `ConsoleGuardService` — foreground monitoring and dashboard recovery
@@ -36,6 +37,18 @@ Games launch through `RetroActivityFuture` with explicit Android intent extras f
 Temporary hardware-test ROMs use deterministic SHA-256 filenames without spaces. This avoids ADB shell argument splitting while preserving readable final dashboard names.
 
 RetroArch, cores, APKs, and ROMs are external runtime dependencies and are not distributed in the repository.
+
+## Library boundary
+
+`GameCatalog` contains the filesystem and filtering rules; Activities only
+render catalog snapshots and launch selected entries. The catalog accepts an
+injected library root and core marker so its behavior can be tested without an
+Android device.
+
+Library traversal is iterative and read-only. It rejects symbolic links,
+requires canonical paths to remain under the selected system directory, and
+caps directory depth, directories visited, games returned, marker size, and
+marker line count. A truncated snapshot is surfaced in the game-list footer.
 
 ## Trust boundary
 
