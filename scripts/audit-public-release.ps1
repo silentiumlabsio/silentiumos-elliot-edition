@@ -69,10 +69,20 @@ $contentRules = [ordered]@{
         "192\.168\.(?:\d{1,3}\.)\d{1,3}|" +
         "172\.(?:1[6-9]|2\d|3[01])\.(?:\d{1,3}\.)\d{1,3})(?!\d)"
     "mac-address" = "(?i)(?<![0-9a-f])(?:[0-9a-f]{2}[:-]){5}[0-9a-f]{2}(?![0-9a-f])"
-    "local-user-path" = "(?i)(?:[a-z]:\\Users\\[^\\\s]+|/home/[^/\s]+|/Users/[^/\s]+)"
+    "local-user-path" = [string]::Concat(
+        "(?i)(?:[a-z]:\\", "Users", "\\[^\\\s]+|/",
+        "home", "/[^/\s]+|/", "Users", "/[^/\s]+)"
+    )
     "private-key" = "-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"
     "github-token" = "(?<![A-Za-z0-9_])gh[pousr]_[A-Za-z0-9_]{20,}"
     "aws-access-key" = "(?<![A-Z0-9])AKIA[A-Z0-9]{16}(?![A-Z0-9])"
+    "google-api-key" = "(?<![A-Za-z0-9_-])AIza[0-9A-Za-z_-]{35}"
+    "slack-token" = "(?<![A-Za-z0-9])xox[baprs]-[0-9A-Za-z-]{10,}"
+    "stripe-live-key" = "(?<![A-Za-z0-9])(?:sk|rk)_live_[0-9A-Za-z]{16,}"
+    "gitlab-token" = "(?<![A-Za-z0-9])glpat-[0-9A-Za-z_-]{20,}"
+    "npm-token" = "(?<![A-Za-z0-9])npm_[0-9A-Za-z]{20,}"
+    "url-credentials" = "(?i)https?://[^/\s:@]+:[^/\s@]+@"
+    "hardcoded-secret" = '(?i)\b(?:api[_-]?key|client[_-]?secret|access[_-]?token|password)\b\s*[:=]\s*[''"][^''"\r\n]{8,}[''"]'
     "hardcoded-parent-pin" = '(?i)(?:SILENTIUM_PARENT_PIN|PARENT_PIN)\s*[:=]\s*[''"]\d{4}[''"]'
     "device-serial-assignment" = "(?i)(?:ANDROID_SERIAL|ro\.serialno|device[_ -]?serial)\s*[:=]\s*\S+"
 }

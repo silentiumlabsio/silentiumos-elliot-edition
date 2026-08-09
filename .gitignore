@@ -5,6 +5,9 @@ local.properties
 *.iml
 .idea/
 .vscode/
+__pycache__/
+*.py[cod]
+.pytest_cache/
 
 # Signing and credentials
 *.jks

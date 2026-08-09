@@ -16,7 +16,7 @@ This checklist describes the public-release review performed on the repository s
 - Parent, library, and dashboard activities are not exported.
 - The accessibility service is protected by `android.permission.BIND_ACCESSIBILITY_SERVICE`.
 - Public utilities require `SILENTIUM_TARGET`; no device address is built into the repository.
-- Release automation rejects prohibited binary formats and sensitive directory names.
+- Release automation rejects prohibited binary formats, sensitive directory names, symlinks, oversized files, and public-manifest drift.
 
 ## Data and artifact checks
 
@@ -28,7 +28,8 @@ The public audit checks for:
 - MAC-address-shaped values
 - Local Windows, macOS, and Linux user paths
 - Private-key headers
-- Common GitHub and AWS credential formats
+- Common GitHub, AWS, Google, Slack, Stripe, GitLab, and npm credential formats
+- Credentials embedded in URLs and common hardcoded secret assignments
 - Hardcoded four-digit parent PIN assignments
 - Common device-serial assignments
 
@@ -39,12 +40,13 @@ A four-digit PIN has only 10,000 possible values. Hashing prevents the plaintext
 ## Release procedure
 
 1. Run `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\audit-public-release.ps1`.
-2. Review the complete staged filename list.
-3. Run Python syntax checks for every tool.
-4. Build with a throwaway local PIN and a clean Android SDK environment.
-5. Confirm that generated APKs, build folders, reports, and logs remain untracked.
-6. Inspect any new screenshots manually.
-7. Review the final commit diff before pushing.
+2. Run `python tools/audit_public_release.py .` and `python -m unittest discover -s tests -v`.
+3. Review the complete staged filename list.
+4. Run Python syntax checks for every tool.
+5. Build with a throwaway local PIN and a clean Android SDK environment.
+6. Confirm that generated APKs, build folders, reports, and logs remain untracked.
+7. Inspect any new screenshots manually.
+8. Review the final commit diff before pushing.
 
 ## Reporting
 

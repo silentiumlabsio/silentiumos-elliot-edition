@@ -32,11 +32,11 @@
                   },
                   {
                       "path":  ".github/workflows/public-safety.yml",
-                      "bytes":  735
+                      "bytes":  926
                   },
                   {
                       "path":  ".gitignore",
-                      "bytes":  860
+                      "bytes":  898
                   },
                   {
                       "path":  "app/build.gradle",
@@ -232,7 +232,7 @@
                   },
                   {
                       "path":  "docs/SECURITY_AUDIT.md",
-                      "bytes":  2597
+                      "bytes":  2851
                   },
                   {
                       "path":  "docs/TESTING.md",
@@ -252,11 +252,11 @@
                   },
                   {
                       "path":  "README.md",
-                      "bytes":  7600
+                      "bytes":  7842
                   },
                   {
                       "path":  "scripts/audit-public-release.ps1",
-                      "bytes":  4966
+                      "bytes":  5545
                   },
                   {
                       "path":  "scripts/build-debug.ps1",
@@ -277,6 +277,14 @@
                   {
                       "path":  "settings.gradle",
                       "bytes":  330
+                  },
+                  {
+                      "path":  "tests/test_audit_public_release.py",
+                      "bytes":  2799
+                  },
+                  {
+                      "path":  "tools/audit_public_release.py",
+                      "bytes":  8628
                   },
                   {
                       "path":  "tools/disable_console_mode.py",

@@ -31,3 +31,9 @@ jobs:
           python -c "import ast,pathlib;
           [ast.parse(p.read_text(encoding='utf-8'), filename=str(p))
           for p in pathlib.Path('tools').glob('*.py')]"
+
+      - name: Run cross-platform public audit
+        run: python tools/audit_public_release.py .
+
+      - name: Test public audit rules
+        run: python -m unittest discover -s tests -v

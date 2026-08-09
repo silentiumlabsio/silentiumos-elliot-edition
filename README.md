@@ -119,7 +119,14 @@ Run the same repository audit used by CI before committing:
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\audit-public-release.ps1
 ```
 
-The check blocks prohibited binary formats and sensitive directories, then scans public text for private network addresses, MAC addresses, local user paths, private-key headers, common token formats, and hardcoded PIN values.
+Or run the standard-library Python version on any supported desktop platform:
+
+```text
+python tools/audit_public_release.py .
+python -m unittest discover -s tests -v
+```
+
+The checks block prohibited binary formats, sensitive directories, symlinks, oversized files, and manifest drift. They scan public text for private network addresses, MAC addresses, local user paths, private-key headers, common provider token formats, hardcoded secrets, and hardcoded PIN values.
 
 See [Security audit](docs/SECURITY_AUDIT.md), [Privacy model](docs/PRIVACY.md), and [Security policy](SECURITY.md).
 
