@@ -10,7 +10,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,24 +71,33 @@ public class ParentToolsActivity extends Activity {
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER);
 
-        Button retro = makeTile("RETROARCH TOOLS\nCores and diagnostics");
+        ConsoleTileButton retro = makeTile(
+                "RetroArch Tools", "Cores and diagnostics");
         retro.setOnClickListener(v ->
                 startActivity(new Intent(this, RetroToolsActivity.class)));
         row.addView(retro, tileParams());
 
-        Button controllers = makeTile("CONTROLLERS\nBluetooth settings");
+        ConsoleTileButton controllers = makeTile(
+                "Controllers", "Bluetooth settings");
         controllers.setOnClickListener(v ->
                 openSettings(Settings.ACTION_BLUETOOTH_SETTINGS));
         row.addView(controllers, tileParams());
 
-        Button network = makeTile("NETWORK\nWi-Fi settings");
+        ConsoleTileButton network = makeTile("Network", "Wi-Fi settings");
         network.setOnClickListener(v ->
                 openSettings(Settings.ACTION_WIFI_SETTINGS));
         row.addView(network, tileParams());
 
+        ConsoleTileButton about = makeTile(
+                "About & Privacy", "Public build information");
+        about.setOnClickListener(v -> startActivity(
+                new Intent(this, PublicSystemInfoActivity.class)));
+        row.addView(about, tileParams());
+
         root.addView(row);
 
-        Button lock = makeTile("LOCK AND RETURN TO ELLIOT'S DASHBOARD");
+        ConsoleTileButton lock = makeTile(
+                "Lock", "Return to Elliot's dashboard");
         lock.setOnClickListener(v -> {
             ConsoleGuardService.lockNow(this);
             returnToDashboard();
@@ -103,17 +111,8 @@ public class ParentToolsActivity extends Activity {
         return root;
     }
 
-    private Button makeTile(String text) {
-        Button button = new Button(this);
-        button.setText(text);
-        button.setTextColor(Color.WHITE);
-        button.setTextSize(17);
-        button.setAllCaps(false);
-        button.setGravity(Gravity.CENTER);
-        button.setFocusable(true);
-        button.setFocusableInTouchMode(true);
-        button.setBackgroundResource(R.drawable.tile_selector);
-        return button;
+    private ConsoleTileButton makeTile(String title, String subtitle) {
+        return new ConsoleTileButton(this, title, subtitle);
     }
 
     private LinearLayout.LayoutParams tileParams() {

@@ -12,6 +12,10 @@ The public tools may create temporary local reports, work folders, downloaded ho
 
 The Android launcher itself has no declared Internet permission and disallows cleartext application traffic.
 
+The in-app About & Privacy screen uses fixed public project facts and the public
+application version. It does not query hardware identifiers, account state,
+network addresses, Wi-Fi details, installed packages, or the game library.
+
 Separate developer tools can use:
 
 - ADB to communicate with a target explicitly supplied through `SILENTIUM_TARGET`.

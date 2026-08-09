@@ -48,7 +48,7 @@
                   },
                   {
                       "path":  "app/src/main/AndroidManifest.xml",
-                      "bytes":  4881
+                      "bytes":  5085
                   },
                   {
                       "path":  "app/src/main/java/com/silentiumlabs/silentiumos/BootReceiver.java",
@@ -88,7 +88,11 @@
                   },
                   {
                       "path":  "app/src/main/java/com/silentiumlabs/silentiumos/ParentToolsActivity.java",
-                      "bytes":  5698
+                      "bytes":  5739
+                  },
+                  {
+                      "path":  "app/src/main/java/com/silentiumlabs/silentiumos/PublicSystemInfoActivity.java",
+                      "bytes":  6861
                   },
                   {
                       "path":  "app/src/main/java/com/silentiumlabs/silentiumos/RetroToolsActivity.java",
@@ -109,6 +113,10 @@
                   {
                       "path":  "app/src/main/res/drawable/dashboard_status.xml",
                       "bytes":  300
+                  },
+                  {
+                      "path":  "app/src/main/res/drawable/info_panel.xml",
+                      "bytes":  381
                   },
                   {
                       "path":  "app/src/main/res/drawable/silentium_banner.png",
@@ -164,7 +172,7 @@
                   },
                   {
                       "path":  "docs/ARCHITECTURE.md",
-                      "bytes":  2491
+                      "bytes":  2602
                   },
                   {
                       "path":  "docs/assets/silentium_banner.png",
@@ -204,7 +212,7 @@
                   },
                   {
                       "path":  "docs/PRIVACY.md",
-                      "bytes":  2061
+                      "bytes":  2294
                   },
                   {
                       "path":  "docs/ROADMAP.md",

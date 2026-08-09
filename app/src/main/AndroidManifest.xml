@@ -62,6 +62,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="landscape" />
         <activity
+            android:name=".PublicSystemInfoActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" />
+        <activity
             android:name=".ParentPinActivity"
             android:exported="false"
             android:launchMode="singleTop"

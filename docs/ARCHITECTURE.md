@@ -8,6 +8,7 @@ SilentiumOS is an Android application using programmatic Java television layouts
 - `MainActivity` — controller-first television dashboard
 - `GameLibraryActivity` / `GameListActivity` — system and game views
 - `ParentPinActivity` / `ParentToolsActivity` — protected household configuration area
+- `PublicSystemInfoActivity` — public build and privacy facts without device identifiers
 - `ConsoleGuardService` — foreground monitoring and dashboard recovery
 - `HomeRedirectAccessibilityService` — redirects protected Amazon Home back to SilentiumOS
 - `BootReceiver` — starts the dashboard after boot broadcasts
@@ -15,7 +16,7 @@ SilentiumOS is an Android application using programmatic Java television layouts
 
 ## Component boundaries
 
-- Parent, library, and dashboard activities are not exported.
+- Parent, library, dashboard, and system-information activities are not exported.
 - `SplashActivity` is exported because it is the leanback launcher and optional Home activity.
 - `BootReceiver` accepts only Android boot actions and verifies the received action in code.
 - The accessibility service is protected by `android.permission.BIND_ACCESSIBILITY_SERVICE`.
